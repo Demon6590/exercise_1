@@ -1,0 +1,70 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+
+struct Person
+{
+    string last_name;
+    string first_name;
+};
+
+vector<string> read_file(const string& path) {
+    ifstream file;
+    file.open(path);
+    vector<string>result;
+    string line;
+    while (getline(file, line)) {
+        result.push_back(line);
+
+    }
+    file.close();
+    return result;
+
+}
+void split(const string& source, char delim, string& last_name, string& first_name) {
+    auto pos = source.find(delim);
+    last_name = source.substr(0, pos);
+    first_name = source.substr(pos+1);
+}
+
+void record_struct(const string& path, Person& Pers) {
+    auto lines = read_file(path);
+    for (auto names : lines) {
+
+        split(names, '|', Pers.last_name, Pers.first_name);
+    }
+
+
+}
+
+void record_file(const string& path, Person& Pers) {
+    ofstream file;
+    file.open(path);
+
+
+    file<< Pers.last_name<<endl;
+    file.close();
+}
+
+int main()
+{     
+    string path0 = "C:\\Users\\Student\\Desktop\\test.txt";
+    Person Vani;
+    string path1 = "C:\\Users\\Student\\Desktop\\Return.txt";
+
+    auto lines = read_file(path0);
+
+    record_struct(path0, Vani);
+    cout << Vani.first_name << " " << Vani.last_name << endl;
+    record_file(path1, Vani);
+
+
+
+    return 0;
+}
+
+
